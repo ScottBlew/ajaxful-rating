@@ -80,6 +80,7 @@ module AjaxfulRating # :nodoc:
       else
         returning rates(dimension).build do |r|
           r.rater = user
+          r.dimension = dimension
         end
       end
       rate.stars = stars
@@ -120,7 +121,7 @@ module AjaxfulRating # :nodoc:
 
     # Finds the rate made by the user if he/she has already voted.
     def rate_by(user, dimension = nil)
-      rates(dimension).find_by_rater_id(user.id)
+      rates(dimension).where(:dimension => dimension).where(:rater_id => user.id).first
     end
 
     # Return true if the user has rated the object, otherwise false
